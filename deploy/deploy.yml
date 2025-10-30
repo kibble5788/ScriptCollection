@@ -1,0 +1,115 @@
+# ================================================================
+# 多目录部署脚本配置文件示例 (YAML格式)
+# 配置文件说明：此文件用于配置 deploy.sh 脚本的部署参数
+# 使用方法：
+#   1. 复制此文件为 deploy.yml
+#   2. 修改下面的配置项为您的实际环境
+#   3. 运行 ./deploy.sh 即可自动部署
+# ================================================================
+
+# 服务器连接配置
+server:
+  # 远程服务器地址（必填）
+  # 示例：IP地址或域名
+  host: "your.server.com"
+  
+  # 服务器用户名（必填）
+  # 示例：root, www-data, ubuntu 等
+  user: "your_username"
+  
+  # 服务器密码（可选，如果使用密钥认证则不需要）
+  # 注意：为了安全，建议使用SSH密钥认证而不是密码
+  # 如果使用密码认证，请填写实际密码
+  password: ""
+  
+  # SSH私钥路径（可选，推荐使用）
+  # 如果使用密钥认证，请指定私钥文件路径
+  # 示例：/home/user/.ssh/id_rsa 或 ~/.ssh/id_rsa
+  ssh_key_path: ""
+  
+  # 认证方式（可选）
+  # 可选值：
+  #   - password：密码认证
+  #   - key：SSH密钥认证（推荐）
+  #   - interactive：交互式密码输入
+  auth_method: "interactive"
+
+# 部署路径配置
+deployment:
+  # 远程部署路径（必填）
+  # 指定文件将被部署到服务器的哪个目录
+  # 示例：/var/www/html, /home/user/project, /www/wwwroot/project
+  remote_path: "/var/www/html/your_project"
+  
+  # 项目名称将自动从项目目录名获取，无需手动配置
+  
+  # 要部署的目录列表（必填）
+  # 格式：源目录:目标目录名（如果不指定目标名称，使用源目录名）
+  # 根据您的项目结构修改以下目录列表
+  directories:
+    - "src"           # 源代码目录
+    - "public"        # 公共资源目录
+    - "config"        # 配置文件目录
+    - "assets"        # 静态资源目录
+    - "templates"     # 模板文件目录
+  
+  # 排除文件/目录的模式列表（可选）
+  # 支持通配符，用于排除不需要部署的文件或目录
+  # 常见排除项：日志文件、缓存文件、临时文件、版本控制文件等
+  exclude_patterns:
+    # 日志和临时文件
+    - "*.log"
+    - "*.tmp"
+    - "*.temp"
+    - "*.bak"
+    - "*.swp"
+    
+    # 版本控制文件
+    - ".git"
+    - ".gitignore"
+    - ".svn"
+    
+    # 依赖和缓存目录
+    - "node_modules"
+    - "vendor"
+    - "cache/*"
+    - "temp/*"
+    - ".cache"
+    
+    # 系统文件
+    - ".DS_Store"
+    - "Thumbs.db"
+    - "desktop.ini"
+    
+    # 环境和配置文件
+    - ".env"
+    - ".env.local"
+    - "config.local.*"
+    
+    # 部署相关文件
+    - "deploy.log"
+    - "*.tar.gz"
+    - "*.zip"
+    
+    # IDE和编辑器文件
+    - ".vscode"
+    - ".idea"
+    - "*.sublime-*"
+
+# 部署行为控制
+behavior:
+  # 是否在远程服务器创建备份（推荐开启）
+  # true：部署前备份即将被覆盖的文件
+  # false：不创建备份，直接覆盖
+  backup_remote: true
+  
+  # 是否清理本地临时文件（推荐开启）
+  # true：部署完成后删除本地生成的压缩包
+  # false：保留本地压缩包用于调试
+  cleanup_local: true
+  
+  # 是否使用sshpass进行密码认证（自动检测）
+  # 此选项由脚本自动检测，通常不需要手动设置
+  # true：使用sshpass（需要系统已安装sshpass）
+  # false：使用交互式密码输入
+  use_sshpass: false
