@@ -571,7 +571,7 @@ extract_files() {
         tar -tzf "'"$ARCHIVE_NAME"'" > /tmp/new_files_list.txt 2>/dev/null
         
         # 检查哪些现有文件将被覆盖
-        BACKUP_DIR="backup_$(date +\"%Y%m%d_%H%M%S\")"
+        BACKUP_DIR="backup_$(date +%Y%m%d_%H%M%S)"
         BACKUP_NEEDED=false
         
         # 静默检查和备份文件
